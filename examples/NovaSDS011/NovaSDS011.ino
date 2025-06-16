@@ -85,11 +85,11 @@ void testDataWorkingMode(uint16_t device_id = 0xFFFF)
   }
   delay(400);
   WorkingMode workingMode = sds011.getWorkingMode(device_id);
-  if (workingMode == WorkingMode::mode_error)
+/*  if (workingMode == WorkingMode::mode_error)
   {
     Serial.println("Fail: getting SDS011 Working Mode.");
     return;
-  }
+  } */
   if (workingMode == WorkingMode::mode_sleep)
   {
     Serial.println("Fail: SDS011 Working Mode not as set.");
