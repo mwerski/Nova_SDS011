@@ -254,7 +254,7 @@ DataReportingMode NovaSDS011::getDataReportingMode(uint16_t device_id)
 // --------------------------------------------------------
 // NovaSDS011:queryData
 // --------------------------------------------------------
-QuerryError NovaSDS011::queryData(float &PM25, float &PM10, uint16_t device_id)
+QueryError NovaSDS011::queryData(float &PM25, float &PM10, uint16_t device_id)
 {
   static uint64_t lastCall = 0;
   static uint16_t lastPM25 = 0;
@@ -266,7 +266,7 @@ QuerryError NovaSDS011::queryData(float &PM25, float &PM10, uint16_t device_id)
 
   if (millis() < (lastCall + MIN_QUERY_INTERVAL))
   {
-    return QuerryError::call_to_often;
+    return QueryError::call_to_often;
   }
   lastCall = millis();
 
@@ -285,7 +285,7 @@ QuerryError NovaSDS011::queryData(float &PM25, float &PM10, uint16_t device_id)
 #ifndef NO_TRACES
     DebugOut("queryData - Error read reply timeout");
 #endif
-    return QuerryError::response_error;
+    return QueryError::response_error;
   }
 
   QUERY_REPLY[2] = reply[2]; //data byte 1 (PM2.5 low byte)
@@ -313,7 +313,7 @@ QuerryError NovaSDS011::queryData(float &PM25, float &PM10, uint16_t device_id)
       DebugOut("queryData - Error on byte " + String(i) + " Received byte=" + String(reply[i]) +
                " Expected byte=" + String(REPORT_TYPE_REPLY[i]));
 #endif
-      return QuerryError::response_error;
+      return QueryError::response_error;
     }
   }
 
@@ -324,7 +324,7 @@ QuerryError NovaSDS011::queryData(float &PM25, float &PM10, uint16_t device_id)
 
   if ((lastPM25 == pm25Serial) && (lastPM10 == pm10Serial))
   {
-    return QuerryError::no_new_data;
+    return QueryError::no_new_data;
   }
 
   lastPM25 = pm25Serial;
@@ -333,7 +333,7 @@ QuerryError NovaSDS011::queryData(float &PM25, float &PM10, uint16_t device_id)
   PM25 = (float)pm25Serial / 10.0;
   PM10 = (float)pm10Serial / 10.0;
 
-  return QuerryError::no_error;
+  return QueryError::no_error;
 }
 
 // --------------------------------------------------------
@@ -496,7 +496,7 @@ WorkingMode NovaSDS011::getWorkingMode(uint16_t device_id)
   {
     return WorkingMode::mode_sleep;
   }
-  else if (reply[4] == WorkingMode::work)
+  else if (reply[4] == WorkingMode::mode_work)
   {
     return WorkingMode::mode_work;
   }
