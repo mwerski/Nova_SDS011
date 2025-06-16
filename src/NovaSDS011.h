@@ -31,7 +31,7 @@ enum DataReportingMode
 	report_error = 0xFF
 };
 
-enum QuerryError
+enum QueryError
 {
 	no_error = 0,
 	no_new_data = 1,
@@ -96,9 +96,9 @@ public:
 		* @param [out] PM25 value of PM2.5 particles in (μg/m3)
 		* @param [out] PM10 value of PM10 particles in (μg/m3)
 		* @param device_id device id (optional)
-		* @return QuerryError
+		* @return QueryError
 		*/
-	QuerryError queryData(float &PM25, float &PM10, uint16_t device_id = 0xFFFF);
+	QueryError queryData(float &PM25, float &PM10, uint16_t device_id = 0xFFFF);
 
 
 	/**
